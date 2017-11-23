@@ -1,0 +1,123 @@
+:root {
+  --bg: #fdfdfd;
+  --meta: #888;
+  --accent: #00baff;
+  --text: black;
+  --base: 1.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  font-family: BlinkMacSystemFont;
+  font-size: var(--base);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'calt', 'liga', 'hist', 'onum', 'pnum';
+
+  overflow: auto;
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+a {
+  color: var(--text);
+
+  text-decoration-skip: ink;
+}
+
+blockquote {
+  font-size: 2rem;
+  font-weight: bold;
+
+  width: 50vw;
+
+  text-align: left;
+}
+
+blockquote div::before {
+  content: '\201C';
+}
+
+blockquote div::after {
+  content: '\201D';
+}
+
+cite {
+  font-size: var(--base);
+  font-weight: normal;
+  font-style: normal;
+
+  display: block;
+
+  margin-top: 2rem;
+}
+
+cite::before {
+  content: '\2014\00a0';
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+header {
+  position: fixed;
+  font-size: 18px;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  padding: 20px;
+
+  user-select: none;
+}
+
+header a,
+time {
+  text-decoration: none;
+
+  color: var(--meta);
+}
+
+header a:hover {
+  color: var(--meta);
+}
+
+header span {
+  color: var(--text);
+}
+
+#slide {
+  display: flex;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  text-align: center;
+}
