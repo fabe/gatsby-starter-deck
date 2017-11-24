@@ -8,10 +8,9 @@ Create presentations using Gatsby & React. Inspired by Gulliermo Rauch’s [deck
 
 ## Usage
 
-    $ git clone git@github.com:fabe/gatsby-deck.git
-    $ cd gatsby-deck
-    $ npm i
-    $ npm run develop
+    $ gatsby new slides-name https://github.com/fabe/gatsby-starter-deck
+    $ cd slides-name
+    $ gatsby develop
 
 Then edit and extend your slides inside the `src/pages` directory. Navigate with the arrow keys.
 
