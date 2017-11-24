@@ -1,7 +1,7 @@
 :root {
   --bg: #fdfdfd;
   --meta: #888;
-  --accent: #00baff;
+  --accent: #3178cd;
   --text: black;
   --base: 1.5rem;
 }
@@ -65,12 +65,37 @@ cite::before {
   content: '\2014\00a0';
 }
 
+pre {
+  font-size: 1rem;
+
+  display: inline-block;
+  overflow-x: scroll;
+
+  margin: 2rem 0;
+
+  text-align: left;
+
+  color: var(--accent);
+}
+
+code {
+  font-family: menlo, monospace;
+  font-size: 90%;
+}
+
 a:hover {
   color: var(--accent);
 }
 
 h1 {
   font-size: 3rem;
+
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+
   margin-bottom: 0.5rem;
 }
 
@@ -80,8 +105,9 @@ p {
 }
 
 header {
-  position: fixed;
   font-size: 18px;
+
+  position: fixed;
   top: 0;
   left: 0;
 

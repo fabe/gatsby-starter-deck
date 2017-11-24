@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Fabian Schultz <desk@fabianschultz.com>",
   "dependencies": {
+    "babel-plugin-include": "^1.2.0",
     "gatsby": "^1.9.119",
     "gatsby-cli": "^1.1.23",
     "gatsby-link": "^1.6.28",

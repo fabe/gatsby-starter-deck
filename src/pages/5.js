@@ -1,13 +1,11 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import Code from '../components/Code';
 
 export default ({ transition }) => (
   <div style={transition && transition.style}>
-    <h2>This slide is rendering itself</h2>
+    <img src="https://i.imgur.com/PnbINJ6.gif" alt="Monkey" />
     <p>
-      Using <code>babel-plugin-include</code>!
+      Star it on <a href="//github.com/fabe/gatsby-deck">GitHub</a> 🌟
     </p>
-    <Code>{include('4.js')}</Code>
   </div>
 );
