@@ -8,6 +8,7 @@
     "gatsby": "^1.9.119",
     "gatsby-cli": "^1.1.23",
     "gatsby-link": "^1.6.28",
+    "gatsby-plugin-offline": "^1.0.10",
     "gatsby-plugin-react-helmet": "^1.0.8",
     "history": "^4.7.2",
     "react-transition-group": "^2.2.1"

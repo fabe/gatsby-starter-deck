@@ -4,5 +4,5 @@ module.exports = {
     title: `Gatsby Deck`,
     date: `November 23, 2017`,
   },
-  plugins: [`gatsby-plugin-react-helmet`],
+  plugins: [`gatsby-plugin-react-helmet`, `gatsby-plugin-offline`],
 };
