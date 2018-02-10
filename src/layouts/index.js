@@ -15,39 +15,50 @@ const Header = ({ name, title, date }) => (
 );
 
 class TemplateWrapper extends Component {
-  componentDidMount() {
-    document.addEventListener('keydown', ({ keyCode }) => {
-      const now = parseInt(location.pathname.substr(1));
-      const NEXT = 39;
-      const PREV = 37;
+  navigate = ({ keyCode }) => {
+    const now = parseInt(location.pathname.substr(1));
+    const NEXT = 39;
+    const PREV = 37;
 
-      const slides = this.props.data.allSitePage.edges.filter(page => {
-        const id = parseInt(page.node.path.substr(1));
+    const slides = this.props.data.allMarkdownRemark.edges.filter(
+      ({ node }) => {
+        const id = node.fileAbsolutePath.replace(/^.*[\\\/]/, '').split('.')[0];
+
         if (id && id !== 404) {
           return true;
         }
-      });
-
-      if (now) {
-        if (keyCode === PREV && now === 1) {
-          return false;
-        } else if (keyCode === NEXT && now === slides.length) {
-          return false;
-        } else if (keyCode === NEXT) {
-          navigateTo(`/${now + 1}`);
-        } else if (keyCode === PREV) {
-          navigateTo(`/${now - 1}`);
-        }
       }
-    });
+    );
+
+    if (now) {
+      if (keyCode === PREV && now === 1) {
+        return false;
+      } else if (keyCode === NEXT && now === slides.length) {
+        return false;
+      } else if (keyCode === NEXT) {
+        navigateTo(`/${now + 1}`);
+      } else if (keyCode === PREV) {
+        navigateTo(`/${now - 1}`);
+      }
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.navigate);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.navigate);
+  }
+
   render() {
     const { children, data } = this.props;
     return (
       <div>
         <Helmet
-          title={`${data.site.siteMetadata.title} — ${data.site.siteMetadata
-            .name}`}
+          title={`${data.site.siteMetadata.title} — ${
+            data.site.siteMetadata.name
+          }`}
         />
         <Header
           name={data.site.siteMetadata.name}
@@ -62,7 +73,7 @@ class TemplateWrapper extends Component {
 
 TemplateWrapper.propTypes = {
   children: PropTypes.func,
-  data: PropTypes.object,
+  data: PropTypes.object
 };
 
 export default TemplateWrapper;
@@ -76,15 +87,10 @@ export const pageQuery = graphql`
         date
       }
     }
-    allSitePage {
+    allMarkdownRemark {
       edges {
         node {
-          path
-          component
-          pluginCreator {
-            name
-            pluginFilepath
-          }
+          fileAbsolutePath
         }
       }
     }
