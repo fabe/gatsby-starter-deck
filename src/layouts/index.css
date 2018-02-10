@@ -6,6 +6,12 @@
   --base: 1.5rem;
 }
 
+@media (max-width: 600px) {
+  :root {
+    --base: 1.2rem;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -28,6 +34,18 @@ html {
   background-color: var(--bg);
 }
 
+#slide {
+  display: flex;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  text-align: center;
+}
+
 a {
   color: var(--text);
 
@@ -35,12 +53,18 @@ a {
 }
 
 blockquote {
-  font-size: 2rem;
+  font-size: 120%;
   font-weight: bold;
 
   width: 50vw;
 
   text-align: left;
+}
+
+@media (max-width: 900px) {
+  blockquote {
+    width: 90vw;
+  }
 }
 
 blockquote div::before {
@@ -52,7 +76,7 @@ blockquote div::after {
 }
 
 cite {
-  font-size: var(--base);
+  font-size: 80%;
   font-weight: normal;
   font-style: normal;
 
@@ -66,7 +90,7 @@ cite::before {
 }
 
 pre {
-  font-size: 1rem;
+  font-size: 70%;
 
   display: inline-block;
   overflow-x: scroll;
@@ -88,13 +112,13 @@ a:hover {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 200%;
 
   margin-bottom: 0.5rem;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 120%;
 
   margin-bottom: 0.5rem;
 }
@@ -105,7 +129,7 @@ p {
 }
 
 header {
-  font-size: 18px;
+  font-size: 50%;
 
   position: fixed;
   top: 0;
@@ -134,16 +158,4 @@ header a:hover {
 
 header span {
   color: var(--text);
-}
-
-#slide {
-  display: flex;
-  overflow: auto;
-  justify-content: center;
-  align-items: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  text-align: center;
 }
