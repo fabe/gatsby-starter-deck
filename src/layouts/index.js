@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link, { navigateTo } from 'gatsby-link';
 import Helmet from 'react-helmet';
+import Swipeable from 'react-swipeable';
 
 import './index.css';
 
@@ -15,10 +16,19 @@ const Header = ({ name, title, date }) => (
 );
 
 class TemplateWrapper extends Component {
+  NEXT = 39;
+  PREV = 37;
+
+  swipeLeft = () => {
+    this.navigate({ keyCode: this.NEXT });
+  };
+
+  swipeRight = () => {
+    this.navigate({ keyCode: this.PREV });
+  };
+
   navigate = ({ keyCode }) => {
     const now = parseInt(location.pathname.substr(1));
-    const NEXT = 39;
-    const PREV = 37;
 
     const slides = this.props.data.allMarkdownRemark.edges.filter(
       ({ node }) => {
@@ -31,13 +41,13 @@ class TemplateWrapper extends Component {
     );
 
     if (now) {
-      if (keyCode === PREV && now === 1) {
+      if (keyCode === this.PREV && now === 1) {
         return false;
-      } else if (keyCode === NEXT && now === slides.length) {
+      } else if (keyCode === this.NEXT && now === slides.length) {
         return false;
-      } else if (keyCode === NEXT) {
+      } else if (keyCode === this.NEXT) {
         navigateTo(`/${now + 1}`);
-      } else if (keyCode === PREV) {
+      } else if (keyCode === this.PREV) {
         navigateTo(`/${now - 1}`);
       }
     }
@@ -56,16 +66,20 @@ class TemplateWrapper extends Component {
     return (
       <div>
         <Helmet
-          title={`${data.site.siteMetadata.title} — ${
-            data.site.siteMetadata.name
-          }`}
+          title={`${data.site.siteMetadata.title} — ${data.site.siteMetadata
+            .name}`}
         />
         <Header
           name={data.site.siteMetadata.name}
           title={data.site.siteMetadata.title}
           date={data.site.siteMetadata.date}
         />
-        <div id="slide">{children()}</div>
+        <Swipeable
+          onSwipingLeft={this.swipeLeft}
+          onSwipingRight={this.swipeRight}
+        >
+          <div id="slide">{children()}</div>
+        </Swipeable>
       </div>
     );
   }
@@ -73,7 +87,7 @@ class TemplateWrapper extends Component {
 
 TemplateWrapper.propTypes = {
   children: PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default TemplateWrapper;

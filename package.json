@@ -15,6 +15,7 @@
     "gatsby-source-filesystem": "^1.5.18",
     "gatsby-transformer-remark": "^1.7.31",
     "history": "^4.7.2",
+    "react-swipeable": "^4.2.0",
     "react-transition-group": "^2.2.1"
   },
   "keywords": [
