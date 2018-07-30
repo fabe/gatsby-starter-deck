@@ -17,7 +17,7 @@ Then edit and extend your slides inside the `src/slides.md` file. Navigate with 
 
 ## Example
 
-###### src/slides.md
+###### [src/slides.md](src/slides.md)
 
 ```md
 # This is the first slide
