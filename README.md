@@ -3,7 +3,7 @@
 [![deploys by netlify](https://img.shields.io/badge/deploys%20by-netlify-00c7b7.svg)](https://www.netlify.com)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-Create presentations using Gatsby, React & Markdown. Inspired by Guillermo Rauch’s [deck on Next.js](https://deck.now.sh/).
+Create presentations using Gatsby, React & Markdown. Inspired by Guillermo Rauch’s [deck on Next.js](https://deck.now.sh/) and [mdx-deck](https://github.com/jxnblk/mdx-deck).
 
 * [Demo](//gatsby-deck.netlify.com)
 
@@ -13,7 +13,21 @@ Create presentations using Gatsby, React & Markdown. Inspired by Guillermo Rauch
     $ cd my-slides
     $ gatsby develop
 
-Then edit and extend your slides inside the `src/pages` directory. Navigate with the arrow keys.
+Then edit and extend your slides inside the `src/slides.md` file. Navigate with the arrow keys.
+
+## Example
+
+###### [src/slides.md](src/slides.md)
+
+```md
+# This is the first slide
+
+---
+
+## This is the second slide
+
+![Monkey](//i.imgur.com/PnbINJ6.gif)
+```
 
 ## Author
 

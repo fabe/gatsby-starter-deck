@@ -30,14 +30,8 @@ class TemplateWrapper extends Component {
   navigate = ({ keyCode }) => {
     const now = parseInt(location.pathname.substr(1));
 
-    const slides = this.props.data.allMarkdownRemark.edges.filter(
-      ({ node }) => {
-        const id = node.fileAbsolutePath.replace(/^.*[\\\/]/, '').split('.')[0];
-
-        if (id && id !== 404) {
-          return true;
-        }
-      }
+    const slides = this.props.data.markdownRemark.rawMarkdownBody.split(
+      '---\n'
     );
 
     if (now) {
@@ -66,8 +60,9 @@ class TemplateWrapper extends Component {
     return (
       <div>
         <Helmet
-          title={`${data.site.siteMetadata.title} — ${data.site.siteMetadata
-            .name}`}
+          title={`${data.site.siteMetadata.title} — ${
+            data.site.siteMetadata.name
+          }`}
         />
         <Header
           name={data.site.siteMetadata.name}
@@ -101,12 +96,8 @@ export const pageQuery = graphql`
         date
       }
     }
-    allMarkdownRemark {
-      edges {
-        node {
-          fileAbsolutePath
-        }
-      }
+    markdownRemark(fileAbsolutePath: { regex: "/slides/" }) {
+      rawMarkdownBody
     }
   }
 `;
