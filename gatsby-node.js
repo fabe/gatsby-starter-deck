@@ -1,4 +1,8 @@
 const path = require('path');
+const matter = require('gray-matter');
+const remark = require('remark');
+const recommended = require('remark-preset-lint-recommended');
+const html = require('remark-html');
 
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
@@ -8,7 +12,7 @@ exports.onCreatePage = ({ page, boundActionCreators }) => {
   return new Promise((resolve, reject) => {
     // Remove trailing slash
     const newPage = Object.assign({}, page, {
-      path: page.path === `/` ? page.path : page.path.replace(/\/$/, ``)
+      path: page.path === `/` ? page.path : page.path.replace(/\/$/, ``),
     });
 
     if (newPage.path !== page.path) {
@@ -29,14 +33,8 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
 
   return graphql(`
     {
-      allMarkdownRemark {
-        edges {
-          node {
-            html
-            fileAbsolutePath
-            id
-          }
-        }
+      markdownRemark(fileAbsolutePath: { regex: "/slides/" }) {
+        rawMarkdownBody
       }
     }
   `).then(result => {
@@ -44,15 +42,26 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       return Promise.reject(result.errors);
     }
 
-    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-      const absolutePath = node.fileAbsolutePath;
-      const fileName = path.basename(absolutePath, path.extname(absolutePath));
+    console.log(result);
 
-      createPage({
-        path: fileName,
-        component: blogPostTemplate,
-        context: { absolutePath }
-      });
+    const slides = result.data.markdownRemark.rawMarkdownBody
+      .split('---\n')
+      .map(rawMarkdownBody => rawMarkdownBody.trim());
+
+    slides.forEach((slide, index) => {
+      remark()
+        .use(recommended)
+        .use(html)
+        .process(slide, (err, file) => {
+          createPage({
+            path: `/${index + 1}`,
+            component: blogPostTemplate,
+            context: {
+              html: String(file),
+              absolutePath: process.cwd() + `/${index + 1}.md`,
+            },
+          });
+        });
     });
   });
 };
