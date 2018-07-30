@@ -1,5 +1,4 @@
 const path = require('path');
-const matter = require('gray-matter');
 const remark = require('remark');
 const recommended = require('remark-preset-lint-recommended');
 const html = require('remark-html');
@@ -42,8 +41,6 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       return Promise.reject(result.errors);
     }
 
-    console.log(result);
-
     const slides = result.data.markdownRemark.rawMarkdownBody
       .split('---\n')
       .map(rawMarkdownBody => rawMarkdownBody.trim());
@@ -58,7 +55,7 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
             component: blogPostTemplate,
             context: {
               html: String(file),
-              absolutePath: process.cwd() + `/${index + 1}.md`,
+              absolutePath: process.cwd() + `/src/slides#${index + 1}`,
             },
           });
         });
