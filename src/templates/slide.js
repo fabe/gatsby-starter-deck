@@ -1,8 +1,18 @@
 import React from 'react';
 
 export default ({ data, pathContext, transition }) => (
-  <div
-    style={transition && transition.style}
-    dangerouslySetInnerHTML={{ __html: pathContext.html }}
-  />
+  <div>
+    <div
+      style={transition && transition.style}
+      dangerouslySetInnerHTML={{ __html: data.slide.html }}
+    />
+  </div>
 );
+
+export const query = graphql`
+  query SlideQuery($id: String!) {
+    slide(id: { eq: $id }) {
+      html
+    }
+  }
+`;

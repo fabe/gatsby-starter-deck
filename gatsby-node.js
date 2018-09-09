@@ -2,6 +2,7 @@ const path = require('path');
 const remark = require('remark');
 const recommended = require('remark-preset-lint-recommended');
 const html = require('remark-html');
+const crypto = require(`crypto`);
 
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
@@ -25,15 +26,55 @@ exports.onCreatePage = ({ page, boundActionCreators }) => {
   });
 };
 
-// Create slides from Markdown.
+// Create nodes from Markdown.
+exports.onCreateNode = ({ node, boundActionCreators }) => {
+  const { createNode } = boundActionCreators;
+
+  if (node.internal.type !== 'MarkdownRemark') {
+    return;
+  }
+
+  const slides = node.rawMarkdownBody
+    .split('---\n')
+    .map(rawMarkdownBody => rawMarkdownBody.trim());
+
+  slides.forEach((slide, index) => {
+    const digest = crypto
+      .createHash(`md5`)
+      .update(JSON.stringify(slide))
+      .digest(`hex`);
+
+    remark()
+      .use(recommended)
+      .use(html)
+      .process(slide, (err, file) => {
+        createNode({
+          id: `Slide__${index + 1}`,
+          parent: `__SOURCE__`,
+          children: [],
+          internal: {
+            type: `Slide`,
+            contentDigest: digest,
+          },
+          html: String(file),
+        });
+      });
+  });
+};
+
+// Create pages from markdown nodes
 exports.createPages = ({ boundActionCreators, graphql }) => {
   const { createPage } = boundActionCreators;
   const blogPostTemplate = path.resolve(`src/templates/slide.js`);
 
   return graphql(`
     {
-      markdownRemark(fileAbsolutePath: { regex: "/slides/" }) {
-        rawMarkdownBody
+      allSlide {
+        edges {
+          node {
+            html
+          }
+        }
       }
     }
   `).then(result => {
@@ -41,24 +82,17 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       return Promise.reject(result.errors);
     }
 
-    const slides = result.data.markdownRemark.rawMarkdownBody
-      .split('---\n')
-      .map(rawMarkdownBody => rawMarkdownBody.trim());
+    const slides = result.data.allSlide.edges;
 
     slides.forEach((slide, index) => {
-      remark()
-        .use(recommended)
-        .use(html)
-        .process(slide, (err, file) => {
-          createPage({
-            path: `/${index + 1}`,
-            component: blogPostTemplate,
-            context: {
-              html: String(file),
-              absolutePath: process.cwd() + `/src/slides#${index + 1}`,
-            },
-          });
-        });
+      createPage({
+        path: `/${index + 1}`,
+        component: blogPostTemplate,
+        context: {
+          id: `Slide__${index + 1}`,
+          absolutePath: process.cwd() + `/src/slides#${index + 1}`,
+        },
+      });
     });
   });
 };
