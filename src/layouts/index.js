@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Link, { navigateTo } from 'gatsby-link';
+import { Link, navigate, graphql } from 'gatsby';
 import Helmet from 'react-helmet';
 import Swipeable from 'react-swipeable';
+import Transition from '../components/transition';
 
 import './index.css';
 
@@ -16,7 +17,7 @@ const Header = ({ name, title, date }) => (
 );
 
 class TemplateWrapper extends Component {
-  NEXT = 39;
+  NEXT = [13, 32, 39];
   PREV = 37;
 
   swipeLeft = () => {
@@ -28,21 +29,18 @@ class TemplateWrapper extends Component {
   };
 
   navigate = ({ keyCode }) => {
-    const now = parseInt(location.pathname.substr(1));
-
-    const slides = this.props.data.markdownRemark.rawMarkdownBody.split(
-      '---\n'
-    );
+    const now = this.props.data.slide.index;
+    const slidesLength = this.props.data.allSlide.edges.length;
 
     if (now) {
       if (keyCode === this.PREV && now === 1) {
         return false;
-      } else if (keyCode === this.NEXT && now === slides.length) {
+      } else if (this.NEXT.indexOf(keyCode) !== -1 && now === slidesLength) {
         return false;
-      } else if (keyCode === this.NEXT) {
-        navigateTo(`/${now + 1}`);
+      } else if (this.NEXT.indexOf(keyCode) !== -1) {
+        navigate(`/${now + 1}`);
       } else if (keyCode === this.PREV) {
-        navigateTo(`/${now - 1}`);
+        navigate(`/${now - 1}`);
       }
     }
   };
@@ -56,7 +54,8 @@ class TemplateWrapper extends Component {
   }
 
   render() {
-    const { children, data } = this.props;
+    const { location, children, data } = this.props;
+
     return (
       <div>
         <Helmet
@@ -73,7 +72,9 @@ class TemplateWrapper extends Component {
           onSwipingLeft={this.swipeLeft}
           onSwipingRight={this.swipeRight}
         >
-          <div id="slide">{children()}</div>
+          <Transition location={location}>
+            <div id="slide">{children}</div>
+          </Transition>
         </Swipeable>
       </div>
     );
@@ -81,23 +82,20 @@ class TemplateWrapper extends Component {
 }
 
 TemplateWrapper.propTypes = {
-  children: PropTypes.func,
+  children: PropTypes.node,
   data: PropTypes.object,
 };
 
 export default TemplateWrapper;
 
-export const pageQuery = graphql`
-  query PageQuery {
+export const query = graphql`
+  query IndexQuery {
     site {
       siteMetadata {
         name
         title
         date
       }
-    }
-    markdownRemark(fileAbsolutePath: { regex: "/slides/" }) {
-      rawMarkdownBody
     }
   }
 `;

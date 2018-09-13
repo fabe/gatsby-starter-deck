@@ -6,8 +6,8 @@ const crypto = require(`crypto`);
 
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
-exports.onCreatePage = ({ page, boundActionCreators }) => {
-  const { createPage, deletePage } = boundActionCreators;
+exports.onCreatePage = ({ page, actions }) => {
+  const { createPage, deletePage } = actions;
 
   return new Promise((resolve, reject) => {
     // Remove trailing slash
@@ -27,8 +27,8 @@ exports.onCreatePage = ({ page, boundActionCreators }) => {
 };
 
 // Create nodes from Markdown.
-exports.onCreateNode = ({ node, boundActionCreators }) => {
-  const { createNode } = boundActionCreators;
+exports.onCreateNode = ({ node, actions }) => {
+  const { createNode } = actions;
 
   if (node.internal.type !== 'MarkdownRemark') {
     return;
@@ -39,15 +39,17 @@ exports.onCreateNode = ({ node, boundActionCreators }) => {
     .map(rawMarkdownBody => rawMarkdownBody.trim());
 
   slides.forEach((slide, index) => {
-    const digest = crypto
-      .createHash(`md5`)
-      .update(JSON.stringify(slide))
-      .digest(`hex`);
-
     remark()
       .use(recommended)
       .use(html)
       .process(slide, (err, file) => {
+        const digest = crypto
+          .createHash(`md5`)
+          .update(String(file))
+          .digest(`hex`);
+
+        console.log(digest);
+
         createNode({
           id: `Slide__${index + 1}`,
           parent: `__SOURCE__`,
@@ -57,14 +59,15 @@ exports.onCreateNode = ({ node, boundActionCreators }) => {
             contentDigest: digest,
           },
           html: String(file),
+          index: index + 1,
         });
       });
   });
 };
 
 // Create pages from markdown nodes
-exports.createPages = ({ boundActionCreators, graphql }) => {
-  const { createPage } = boundActionCreators;
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions;
   const blogPostTemplate = path.resolve(`src/templates/slide.js`);
 
   return graphql(`

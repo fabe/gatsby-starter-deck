@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { navigateTo } from 'gatsby-link';
+import { navigate } from 'gatsby';
 
 class Index extends Component {
   componentDidMount() {
-    navigateTo(`/1`);
+    navigate(`/1`, { replace: true });
   }
   render() {
     return <div />;
   }
 }
+
 export default Index;
