@@ -1,11 +1,6 @@
 const path = require('path');
-const remark = require('remark');
-const recommended = require('remark-preset-lint-recommended');
-const html = require('remark-html');
-const crypto = require(`crypto`);
 
-// Implement the Gatsby API “onCreatePage”. This is
-// called after every page is created.
+// Remove trailing slash
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions;
 
@@ -23,45 +18,6 @@ exports.onCreatePage = ({ page, actions }) => {
     }
 
     resolve();
-  });
-};
-
-// Create nodes from Markdown.
-exports.onCreateNode = ({ node, actions }) => {
-  const { createNode } = actions;
-
-  if (node.internal.type !== 'MarkdownRemark') {
-    return;
-  }
-
-  const slides = node.rawMarkdownBody
-    .split('---\n')
-    .map(rawMarkdownBody => rawMarkdownBody.trim());
-
-  slides.forEach((slide, index) => {
-    remark()
-      .use(recommended)
-      .use(html)
-      .process(slide, (err, file) => {
-        const digest = crypto
-          .createHash(`md5`)
-          .update(String(file))
-          .digest(`hex`);
-
-        console.log(digest);
-
-        createNode({
-          id: `Slide__${index + 1}`,
-          parent: `__SOURCE__`,
-          children: [],
-          internal: {
-            type: `Slide`,
-            contentDigest: digest,
-          },
-          html: String(file),
-          index: index + 1,
-        });
-      });
   });
 };
 

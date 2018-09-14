@@ -12,23 +12,9 @@ export default ({ data, transition }) => (
 
 export const query = graphql`
   query SlideQuery($id: String!) {
-    site {
-      siteMetadata {
-        name
-        title
-        date
-      }
-    }
     slide(id: { eq: $id }) {
       html
       index
-    }
-    allSlide {
-      edges {
-        node {
-          id
-        }
-      }
     }
   }
 `;

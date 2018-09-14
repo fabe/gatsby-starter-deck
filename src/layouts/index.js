@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, navigate, graphql } from 'gatsby';
+import { Link, navigate, StaticQuery, graphql } from 'gatsby';
 import Helmet from 'react-helmet';
 import Swipeable from 'react-swipeable';
 import Transition from '../components/transition';
@@ -30,7 +30,7 @@ class TemplateWrapper extends Component {
 
   navigate = ({ keyCode }) => {
     const now = this.props.data.slide.index;
-    const slidesLength = this.props.data.allSlide.edges.length;
+    const slidesLength = this.props.slidesLength;
 
     if (now) {
       if (keyCode === this.PREV && now === 1) {
@@ -54,19 +54,17 @@ class TemplateWrapper extends Component {
   }
 
   render() {
-    const { location, children, data } = this.props;
+    const { location, children, site } = this.props;
 
     return (
       <div>
         <Helmet
-          title={`${data.site.siteMetadata.title} — ${
-            data.site.siteMetadata.name
-          }`}
+          title={`${site.siteMetadata.title} — ${site.siteMetadata.name}`}
         />
         <Header
-          name={data.site.siteMetadata.name}
-          title={data.site.siteMetadata.title}
-          date={data.site.siteMetadata.date}
+          name={site.siteMetadata.name}
+          title={site.siteMetadata.title}
+          date={site.siteMetadata.date}
         />
         <Swipeable
           onSwipingLeft={this.swipeLeft}
@@ -86,16 +84,32 @@ TemplateWrapper.propTypes = {
   data: PropTypes.object,
 };
 
-export default TemplateWrapper;
-
-export const query = graphql`
-  query IndexQuery {
-    site {
-      siteMetadata {
-        name
-        title
-        date
+export default props => (
+  <StaticQuery
+    query={graphql`
+      query IndexQuery {
+        site {
+          siteMetadata {
+            name
+            title
+            date
+          }
+        }
+        allSlide {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
-    }
-  }
-`;
+    `}
+    render={data => (
+      <TemplateWrapper
+        site={data.site}
+        slidesLength={data.allSlide.edges.length}
+        {...props}
+      />
+    )}
+  />
+);
