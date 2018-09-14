@@ -5,17 +5,37 @@
 
 Create presentations using Gatsby, React & Markdown. Inspired by Guillermo Rauch’s [deck on Next.js](https://deck.now.sh/) and [mdx-deck](https://github.com/jxnblk/mdx-deck).
 
-* [Demo](//gatsby-deck.netlify.com)
+**[See a live example](//gatsby-deck.netlify.com)**
+
+## Installation
+
+### With [`gatsby-cli`](https://www.npmjs.com/package/gatsby-cli)
+
+```bash
+$ gatsby new my-slides https://github.com/fabe/gatsby-starter-deck
+```
+
+### With `git clone`
+
+```bash
+$ git clone my-slides git@github.com:fabe/gatsby-starter-deck.git
+$ cd my-slides
+$ yarn
+```
 
 ## Usage
 
-    $ gatsby new my-slides https://github.com/fabe/gatsby-starter-deck
-    $ cd my-slides
-    $ gatsby develop
+Edit and extend your slides inside the `src/slides.md` file. Navigate with the arrow keys.
 
-Then edit and extend your slides inside the `src/slides.md` file. Navigate with the arrow keys.
+```bash
+# To develop & write
+$ yarn develop
 
-## Example
+# To build
+$ yarn build
+```
+
+## [Example](//gatsby-deck.netlify.com)
 
 ###### [src/slides.md](src/slides.md)
 
@@ -31,4 +51,4 @@ Then edit and extend your slides inside the `src/slides.md` file. Navigate with 
 
 ## Author
 
-* Fabian Schultz ([@fschultz\_](https://twitter.com/fschultz_))
+- Fabian Schultz ([@fschultz\_](https://twitter.com/fschultz_))
