@@ -14,7 +14,10 @@
     "react-dom": "^16.5.1",
     "react-helmet": "^5.2.0",
     "react-swipeable": "^4.2.0",
-    "react-transition-group": "^2.2.1"
+    "react-transition-group": "^2.2.1",
+    "remark": "^9.0.0",
+    "remark-html": "^8.0.0",
+    "remark-preset-lint-recommended": "^3.0.2"
   },
   "keywords": [
     "gatsby",
@@ -26,8 +29,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd plugins/gatsby-plugin-deck && $npm_execpath install"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "prettier": "^1.10.2"

@@ -11,8 +11,8 @@ export default ({ data, transition }) => (
 );
 
 export const query = graphql`
-  query SlideQuery($id: String!) {
-    slide(id: { eq: $id }) {
+  query SlideQuery($index: Int!) {
+    slide(index: { eq: $index }) {
       html
       index
     }

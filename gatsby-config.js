@@ -8,7 +8,6 @@ module.exports = {
     `gatsby-plugin-layout`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-offline`,
-    `gatsby-plugin-deck`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {

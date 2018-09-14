@@ -1,4 +1,50 @@
 const path = require('path');
+const remark = require('remark');
+const recommended = require('remark-preset-lint-recommended');
+const html = require('remark-html');
+const crypto = require('crypto');
+
+exports.onCreateNode = ({ node, actions, loadNodeContent, reporter }) => {
+  const { createNode } = actions;
+
+  if (
+    node.internal.mediaType !== `text/markdown` &&
+    node.internal.mediaType !== `text/x-markdown`
+  ) {
+    return;
+  }
+
+  return new Promise(async (resolve, reject) => {
+    const content = await loadNodeContent(node);
+    const slides = content.split('---\n').map(body => body.trim());
+
+    slides.forEach((slide, index) => {
+      remark()
+        .use(recommended)
+        .use(html)
+        .process(slide, (err, file) => {
+          const digest = crypto
+            .createHash(`md5`)
+            .update(String(file))
+            .digest(`hex`);
+
+          createNode({
+            id: `Slide__${index + 1}`,
+            parent: `__SOURCE__`,
+            children: [],
+            internal: {
+              type: `Slide`,
+              contentDigest: digest,
+            },
+            html: String(file),
+            index: index + 1,
+          });
+        });
+    });
+
+    resolve();
+  });
+};
 
 // Remove trailing slash
 exports.onCreatePage = ({ page, actions }) => {
@@ -48,7 +94,7 @@ exports.createPages = ({ actions, graphql }) => {
         path: `/${index + 1}`,
         component: blogPostTemplate,
         context: {
-          id: `Slide__${index + 1}`,
+          index: index + 1,
           absolutePath: process.cwd() + `/src/slides#${index + 1}`,
         },
       });
