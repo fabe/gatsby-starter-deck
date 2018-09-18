@@ -4,7 +4,13 @@ const recommended = require('remark-preset-lint-recommended');
 const html = require('remark-html');
 const crypto = require('crypto');
 
-exports.onCreateNode = ({ node, actions, loadNodeContent, reporter }) => {
+exports.onCreateNode = ({
+  node,
+  actions,
+  loadNodeContent,
+  createNodeId,
+  reporter,
+}) => {
   const { createNode } = actions;
 
   if (
@@ -29,8 +35,8 @@ exports.onCreateNode = ({ node, actions, loadNodeContent, reporter }) => {
             .digest(`hex`);
 
           createNode({
-            id: `Slide__${index + 1}`,
-            parent: `__SOURCE__`,
+            id: createNodeId(`${node.id}_${index + 1} >>> Slide`),
+            parent: node.id,
             children: [],
             internal: {
               type: `Slide`,
