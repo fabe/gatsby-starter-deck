@@ -5,7 +5,7 @@
 
 Create presentations using Gatsby, React & Markdown. Inspired by Guillermo Rauch’s [deck on Next.js](https://deck.now.sh/) and [mdx-deck](https://github.com/jxnblk/mdx-deck).
 
-**[See a live example](//gatsby-deck.netlify.com)**
+➡️ **[See a live example](//gatsby-deck.netlify.com)**
 
 ## Installation
 
@@ -35,7 +35,7 @@ $ yarn develop
 $ yarn build
 ```
 
-## [Example](//gatsby-deck.netlify.com)
+### Writing
 
 ###### [src/slides.md](src/slides.md)
 
