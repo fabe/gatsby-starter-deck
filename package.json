@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "author": "Fabian Schultz <desk@fabianschultz.com>",
   "dependencies": {
-    "gatsby": "2.0.0-rc.25",
+    "gatsby": "^2.0.4",
     "gatsby-plugin-layout": "^1.0.1",
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
