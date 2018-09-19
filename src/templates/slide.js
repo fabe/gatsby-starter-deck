@@ -1,6 +1,7 @@
 import React from 'react';
+import { graphql } from 'gatsby';
 
-export default ({ data, pathContext, transition }) => (
+export default ({ data, transition }) => (
   <div>
     <div
       style={transition && transition.style}
@@ -10,9 +11,10 @@ export default ({ data, pathContext, transition }) => (
 );
 
 export const query = graphql`
-  query SlideQuery($id: String!) {
-    slide(id: { eq: $id }) {
+  query SlideQuery($index: Int!) {
+    slide(index: { eq: $index }) {
       html
+      index
     }
   }
 `;

@@ -5,21 +5,14 @@ module.exports = {
     date: `July 30, 2018`,
   },
   plugins: [
+    `gatsby-plugin-layout`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-offline`,
-    `gatsby-transformer-remark`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `slides`,
         path: `${__dirname}/src`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-postcss-sass`,
-      options: {
-        postCssPlugins: [],
-        precision: 8,
       },
     },
   ],
