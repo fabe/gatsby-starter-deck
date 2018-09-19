@@ -35,7 +35,7 @@ $ yarn develop
 $ yarn build
 ```
 
-### Writing
+## Writing
 
 ###### [src/slides.md](src/slides.md)
 
