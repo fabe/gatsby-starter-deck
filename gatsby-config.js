@@ -12,7 +12,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `slides`,
-        path: `${__dirname}/src`,
+        path: `${__dirname}/src/slides`,
       },
     },
     {

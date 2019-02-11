@@ -37,6 +37,7 @@ exports.createPages = ({ actions, createNodeId, graphql }) => {
       allMarkdownRemark {
         edges {
           node {
+            fileAbsolutePath,
             html
           }
         }
@@ -48,10 +49,12 @@ exports.createPages = ({ actions, createNodeId, graphql }) => {
     }
 
     const slides = result.data.allMarkdownRemark.edges;
-    const node = slides[0].node
-    const nodes = node.html.split('<hr>')
+    slides.sort((a, b) => a.node.fileAbsolutePath > b.node.fileAbsolutePath ? 1 : -1)
+    const nodes = slides.flatMap((s) => s.node.html.split('<hr>').map((html) => ({
+      node: s.node, html
+    })))
 
-    nodes.forEach((html, index) => {
+    nodes.forEach(({ node, html }, index) => {
       const digest = crypto
         .createHash(`md5`)
         .update(html)
