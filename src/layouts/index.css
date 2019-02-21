@@ -50,6 +50,11 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
+#slide ul {
+    text-align: left;
+    margin-left: 32px;
+}
+
 a {
   color: var(--text);
 

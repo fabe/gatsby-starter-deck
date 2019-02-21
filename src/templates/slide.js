@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql } from 'gatsby';
 
 export default ({ data, transition }) => (
-  <div>
+  <div style={{'width': '100%'}}>
     <div
       style={transition && transition.style}
       dangerouslySetInnerHTML={{ __html: data.slide.html }}

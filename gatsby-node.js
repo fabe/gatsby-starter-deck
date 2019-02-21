@@ -1,56 +1,10 @@
 const path = require('path');
+const { createFilePath } = require('gatsby-source-filesystem')
 const remark = require('remark');
 const recommended = require('remark-preset-lint-recommended');
 const html = require('remark-html');
 const crypto = require('crypto');
-
-exports.onCreateNode = ({
-  node,
-  actions,
-  loadNodeContent,
-  createNodeId,
-  reporter,
-}) => {
-  const { createNode } = actions;
-
-  if (
-    node.internal.mediaType !== `text/markdown` &&
-    node.internal.mediaType !== `text/x-markdown`
-  ) {
-    return;
-  }
-
-  return new Promise(async (resolve, reject) => {
-    const content = await loadNodeContent(node);
-    const slides = content.split('---\n').map(body => body.trim());
-
-    slides.forEach((slide, index) => {
-      remark()
-        .use(recommended)
-        .use(html)
-        .process(slide, (err, file) => {
-          const digest = crypto
-            .createHash(`md5`)
-            .update(String(file))
-            .digest(`hex`);
-
-          createNode({
-            id: createNodeId(`${node.id}_${index + 1} >>> Slide`),
-            parent: node.id,
-            children: [],
-            internal: {
-              type: `Slide`,
-              contentDigest: digest,
-            },
-            html: String(file),
-            index: index + 1,
-          });
-        });
-    });
-
-    resolve();
-  });
-};
+const _ = require('lodash')
 
 // Remove trailing slash
 exports.onCreatePage = ({ page, actions }) => {
@@ -74,15 +28,16 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 
 // Create pages from markdown nodes
-exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions;
+exports.createPages = ({ actions, createNodeId, graphql }) => {
+  const { createPage, createNode } = actions;
   const blogPostTemplate = path.resolve(`src/templates/slide.js`);
 
   return graphql(`
     {
-      allSlide {
+      allMarkdownRemark {
         edges {
           node {
+            fileAbsolutePath,
             html
           }
         }
@@ -93,9 +48,32 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors);
     }
 
-    const slides = result.data.allSlide.edges;
+    const slides = result.data.allMarkdownRemark.edges;
+    slides.sort((a, b) => a.node.fileAbsolutePath > b.node.fileAbsolutePath ? 1 : -1)
+    const nodes = slides.flatMap((s) => s.node.html.split('<hr>').map((html) => ({
+      node: s.node, html
+    })))
 
-    slides.forEach((slide, index) => {
+    nodes.forEach(({ node, html }, index) => {
+      const digest = crypto
+        .createHash(`md5`)
+        .update(html)
+        .digest(`hex`);
+
+      createNode({
+        id: createNodeId(`${node.id}_${index + 1} >>> Slide`),
+        parent: node.id,
+        children: [],
+        internal: {
+          type: `Slide`,
+          contentDigest: digest,
+        },
+        html: html,
+        index: index + 1,
+      });
+    })
+
+    nodes.forEach((slide, index) => {
       createPage({
         path: `/${index + 1}`,
         component: blogPostTemplate,
