@@ -55,7 +55,7 @@ Examples:
 ![Monkey](//i.imgur.com/PnbINJ6.gif)
 ```
 
-## Author
+## Authors
 
 - Fabian Schultz ([@fschultz\_](https://twitter.com/fschultz_))
 - Frank Murphy ([AnIrishDuck](https://github.com/AnIrishDuck))
