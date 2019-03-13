@@ -58,7 +58,7 @@ html {
 a {
   color: var(--text);
 
-  text-decoration-skip: ink;
+  text-decoration-skip-ink: auto;
 }
 
 blockquote {
