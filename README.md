@@ -19,7 +19,7 @@ $ gatsby new my-slides https://github.com/fabe/gatsby-starter-deck
 ### With `git clone`
 
 ```bash
-$ git clone my-slides git@github.com:fabe/gatsby-starter-deck.git
+$ git clone git@github.com:fabe/gatsby-starter-deck.git my-slides
 $ cd my-slides
 $ yarn
 ```
