@@ -1,10 +1,5 @@
 const path = require('path');
-const { createFilePath } = require('gatsby-source-filesystem')
-const remark = require('remark');
-const recommended = require('remark-preset-lint-recommended');
-const html = require('remark-html');
-const crypto = require('crypto');
-const _ = require('lodash')
+const _ = require('lodash');
 
 // Remove trailing slash
 exports.onCreatePage = ({ page, actions }) => {
@@ -28,7 +23,7 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 
 // Create pages from markdown nodes
-exports.createPages = ({ actions, createNodeId, graphql }) => {
+exports.createPages = ({ actions, createContentDigest, createNodeId, graphql }) => {
   const { createPage, createNode } = actions;
   const slideTemplate = path.resolve(`src/templates/slide.js`);
 
@@ -37,7 +32,7 @@ exports.createPages = ({ actions, createNodeId, graphql }) => {
       allMarkdownRemark {
         edges {
           node {
-            fileAbsolutePath,
+            fileAbsolutePath
             html
           }
         }
@@ -52,26 +47,21 @@ exports.createPages = ({ actions, createNodeId, graphql }) => {
     slides.sort((a, b) => a.node.fileAbsolutePath > b.node.fileAbsolutePath ? 1 : -1)
     const nodes = slides.flatMap((s) => s.node.html.split('<hr>').map((html) => ({
       node: s.node, html
-    })))
+    })));
 
     nodes.forEach(({ node, html }, index) => {
-      const digest = crypto
-        .createHash(`md5`)
-        .update(html)
-        .digest(`hex`);
-
       createNode({
         id: createNodeId(`${node.id}_${index + 1} >>> Slide`),
         parent: node.id,
         children: [],
         internal: {
           type: `Slide`,
-          contentDigest: digest,
+          contentDigest: createContentDigest(html),
         },
         html: html,
         index: index + 1,
       });
-    })
+    });
 
     nodes.forEach((slide, index) => {
       createPage({
@@ -84,4 +74,13 @@ exports.createPages = ({ actions, createNodeId, graphql }) => {
       });
     });
   });
+};
+
+exports.sourceNodes = ({ actions }) => {
+  actions.createTypes(`
+    type Slide implements Node {
+      html: String
+      index: Int
+    }
+  `);
 };
