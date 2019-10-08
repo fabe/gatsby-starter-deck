@@ -6,7 +6,7 @@
   "dependencies": {
     "gatsby": "^2.2.0",
     "gatsby-plugin-layout": "^1.0.1",
-    "gatsby-plugin-offline": "^2.0.5",
+    "gatsby-plugin-offline": "^3.0.12",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-plugin-sharp": "^2.0.14",
     "gatsby-remark-copy-linked-files": "^2.0.7",
@@ -17,8 +17,8 @@
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-helmet": "^5.2.0",
-    "react-swipeable": "^4.3.0",
-    "react-transition-group": "^2.4.0"
+    "react-swipeable": "^5.4.0",
+    "react-transition-group": "^4.3.0"
   },
   "keywords": [
     "gatsby",
