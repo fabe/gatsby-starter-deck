@@ -1,3 +1,7 @@
+> 🚨 This starter is now archived in favor of [`gatsby-theme-mdx-deck`](https://github.com/jxnblk/mdx-deck/tree/master/packages/gatsby-theme). Thanks for your interest 💜
+
+---
+
 # gatsby-starter-deck
 
 [![dependencies](https://img.shields.io/david/fabe/gatsby-starter-deck.svg)](./package.json)
